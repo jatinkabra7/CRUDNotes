@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FloatingActionButton
@@ -19,7 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -28,18 +29,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.jatinkabra.crudnotes.dataClasses.Note
 import com.jatinkabra.crudnotes.ui.theme.ColorGrey
 import com.jatinkabra.crudnotes.ui.theme.ColorRed
 import com.jatinkabra.crudnotes.viewmodel.NoteViewModel
+import kotlin.math.absoluteValue
 
 @Composable
-fun UpsertNotesScreen(viewModel: NoteViewModel, navHostController: NavHostController) {
+fun UpsertNotesScreen(id : Int, viewModel: NoteViewModel, navHostController: NavHostController) {
 
     var title by remember {
         mutableStateOf("")
@@ -49,13 +49,16 @@ fun UpsertNotesScreen(viewModel: NoteViewModel, navHostController: NavHostContro
         mutableStateOf("")
     }
 
-//    if(note.title.isNotEmpty()) {
-//        title = note.title
-//    }
-//
-//    if(note.description.isNotEmpty()) {
-//        description = note.description
-//    }
+
+    val note = viewModel.getNoteWithId(id).observeAsState()  // Observe the LiveData
+
+    LaunchedEffect(key1 = note.value) {
+        note.value?.let {
+            title = it.title
+            description = it.description
+        }
+    }
+
 
     Scaffold(
         containerColor = Color.Black,
@@ -63,11 +66,17 @@ fun UpsertNotesScreen(viewModel: NoteViewModel, navHostController: NavHostContro
             FloatingActionButton(
                 onClick = {
 
-//                    if(note.title.isNotEmpty() || note.description.isNotEmpty()) {
-//                        viewModel.deleteNote(note.id)
-//                    }
+                    if(title.isNotEmpty() || description.isNotEmpty()) {
 
-                    viewModel.upsertNote(title = title, description = description)
+                        if(id != -1) {
+
+                            viewModel.update(id, title, description)
+
+                        }
+
+                        else viewModel.upsertNote(title = title, description = description)
+                    }
+
 
                     navHostController.popBackStack()
                 },
@@ -100,7 +109,6 @@ fun UpsertNotesScreen(viewModel: NoteViewModel, navHostController: NavHostContro
 
                 TextField(
                     textStyle = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.2f)
@@ -128,7 +136,6 @@ fun UpsertNotesScreen(viewModel: NoteViewModel, navHostController: NavHostContro
 
                 TextField(
                     textStyle = TextStyle(fontSize = 20.sp),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.5f)

@@ -20,9 +20,12 @@ fun Navigation(navHostController: NavHostController) {
             NotesScreen(navHostController = navHostController, viewModel = NoteViewModel())
         }
 
-        composable("UpsertNotesScreen") {
+        composable("UpsertNotesScreen"+"/{id}") {
+            val id = it.arguments?.getString("id")
+            if(id != null) {
 
-            UpsertNotesScreen(viewModel = NoteViewModel(), navHostController = navHostController)
+                UpsertNotesScreen(id = id.toInt(), viewModel = NoteViewModel(), navHostController = navHostController)
+            }
         }
     }
 }
