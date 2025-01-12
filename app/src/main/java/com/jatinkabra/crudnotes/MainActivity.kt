@@ -2,6 +2,7 @@ package com.jatinkabra.crudnotes
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,12 +19,16 @@ import com.jatinkabra.crudnotes.navigation.Navigation
 import com.jatinkabra.crudnotes.screens.NotesScreen
 import com.jatinkabra.crudnotes.screens.UpsertNotesScreen
 import com.jatinkabra.crudnotes.ui.theme.CRUDNotesTheme
-import kotlinx.serialization.Contextual
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.light(
+                android.graphics.Color.BLACK,
+                android.graphics.Color.BLACK
+            )
+        )
         setContent {
 
 

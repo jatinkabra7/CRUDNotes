@@ -1,8 +1,9 @@
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.jetbrainsKotlinSerialization)
-    id("kotlin-kapt")
+    alias(libs.plugins.gms.google.services)
 }
 
 android {
@@ -14,7 +15,7 @@ android {
         minSdk = 26
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -61,7 +62,10 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.androidx.runtime.livedata)
+
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+    implementation(libs.support.annotations)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,21 +74,33 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("androidx.compose.material3:material3:1.3.1")
-    implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
-    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.4.0-alpha05")
-    implementation ("androidx.compose.material3:material3:1.0.1")
-    implementation ("androidx.compose.material:material-icons-extended:1.4.3")
-    implementation ("androidx.compose.material3:material3:1.x.x")
+    implementation(libs.androidx.compose.material3.material32)
+    //implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
+    implementation(libs.androidx.material3.adaptive.navigation.suite)
+    implementation (libs.androidx.material3.v101)
+    implementation (libs.androidx.material.icons.extended)
+    implementation (libs.androidx.compose.material3.material32)
 
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.runtime)
+    implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.runtime.rxjava2)
 
-    val room_version = "2.6.1"
+    implementation(libs.firebase.analytics)
 
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
+
+    implementation(libs.androidx.animation)
+
+    implementation (libs.ui)
+    implementation (libs.accompanist.navigation.animation)
+    implementation(libs.play.services.base)
+    val nav_version = "2.8.5"
+
+    // Jetpack Compose integration
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    implementation(platform(libs.firebase.bom))
+
+
 
 
 }

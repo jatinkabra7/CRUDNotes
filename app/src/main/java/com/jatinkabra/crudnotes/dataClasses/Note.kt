@@ -1,16 +1,12 @@
 package com.jatinkabra.crudnotes.dataClasses
 
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
+import androidx.compose.foundation.MutatePriority
 
-@Entity
-@Serializable
 data class Note(
-    @PrimaryKey(autoGenerate = true)
-    val id : Int = 0,
-    val title : String,
-    val description : String
+    val id : String = "",
+    val title : String = "",
+    val description : String = "",
+    val priority: Int = 0,
+    val randomInt: Int = kotlin.random.Random.nextInt(1,8) // generates random number between 1 and 7
 )
